@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Web worker</title>
-</head>
+<html>
 <body>
-<a href="https://github.com/webpack/webpack/tree/master/examples/web-worker">github</a>
-<div>Web Worker</div>
-<script src="./index.js"></script>
+<p>Count numbers: <output id="result"></output></p>
+<button onclick="startWorker()">Start Worker</button>
+<button onclick="stopWorker()">Stop Worker</button>
+<input type="text" value=""/>
+<script>
+    let worker;
+    function startWorker () {
+        if (typeof(Worker) !== "undefined") {
+            worker = new Worker('worker.js')
+            worker.onmessage = function (event) {
+                document.querySelector("#result").innerHTML = event.data;
+            };
+        } else {
+            document.querySelector("#result").innerHTML = "Sorry, your browser does not support Web Workers...";
+        }
+    }
+
+    function stopWorker () {
+        worker.terminate();
+    }
+</script>
 </body>
 </html>
